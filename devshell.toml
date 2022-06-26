@@ -1,4 +1,10 @@
-# https://numtide.github.io/devshell
+# Docs: https://numtide.github.io/devshell
+
+[devshell]
+# packages = [
+#   "curl", # for mongodb
+# ]
+
 [[commands]]
 package = "devshell.cli"
 help = "Per project developer environments"
