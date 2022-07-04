@@ -1,8 +1,8 @@
 # Docs: https://numtide.github.io/devshell
 
 [devshell]
-# packages = [
-#   "curl", # for mongodb
+# packages = [ # Search: https://search.nixos.org/packages
+#   "curl",
 # ]
 
 [[commands]]
