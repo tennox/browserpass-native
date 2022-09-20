@@ -7,4 +7,4 @@
 
 [[commands]]
 package = "devshell.cli"
-help = "Per project developer environments"
+help = "Per project developer environments - https://github.com/numtide/devshell/"
