@@ -8,6 +8,7 @@
   packages = with pkgs; [
     # Search for packages: https://search.nixos.org/packages?channel=unstable&query=cowsay
     # (note: this searches on unstable channel, be aware your nixpkgs flake input might be on a release channel)
+    hello
   ];
 
   scripts = {
@@ -21,6 +22,7 @@
     # available pre-configured hooks: https://devenv.sh/reference/options/#pre-commithooks
     # adding hooks which are not included: https://github.com/cachix/pre-commit-hooks.nix/issues/31
 
-    alejandra.enable = true; # for nix - https://github.com/kamadorueda/alejandra
+    nil.enable = true; # nix check
+    nixpkgs-fmt.enable = true; # nix formatting
   };
 }
