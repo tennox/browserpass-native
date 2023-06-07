@@ -1,29 +1,28 @@
 {
-  description = "";
-
   inputs = {
-    devshell.url = "github:numtide/devshell";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05"; # or use /nixos-unstable to get latest packages, but maybe less caching
+    systems.url = "github:nix-systems/default"; # (i) allows overriding systems easily, see https://github.com/nix-systems/nix-systems#consumer-usage
+    devenv.url = "github:cachix/devenv";
   };
 
-  outputs = { self, flake-utils, devshell, nixpkgs }:
-    flake-utils.lib.eachDefaultSystem (system: {
-      devShell =
+  outputs = { self, nixpkgs, devenv, systems, flake-parts, ... } @ inputs: (
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = (import systems);
+      imports = [
+        inputs.devenv.flakeModule
+      ];
+      perSystem = { config, self', inputs', pkgs, system, ... }: # perSystem docs: https://flake.parts/module-arguments.html#persystem-module-parameters
         let
-          pkgs = import nixpkgs {
-            inherit system;
-
-            overlays = [ devshell.overlays.default ];
-          };
+          pkgs = nixpkgs.legacyPackages.${system};
         in
-        pkgs.devshell.mkShell {
-          #imports = [ (pkgs.devshell.importTOML ./devshell.toml) ]; - in case you want to enable devshell.toml support
-
-          devshell.packages = with pkgs; [
-              nixpkgs-fmt # for editing this file
-
-              # YOUR PACKAGES HERE #
-          ];
+        {
+          devenv.shells.default = (import ./devenv.nix { inherit pkgs inputs; });
         };
-    });
+    }
+  );
+
+  nixConfig = {
+    extra-substituters = [ "https://devenv.cachix.org" ];
+    extra-trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];
+  };
 }
