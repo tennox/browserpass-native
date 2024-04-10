@@ -3,6 +3,7 @@
   languages = {
     # Docs: https://devenv.sh/languages/
     nix.enable = true;
+    go.enable = true;
   };
 
   packages = with pkgs; [
